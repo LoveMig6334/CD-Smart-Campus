@@ -55,7 +55,13 @@ export default function Home() {
     <div className="dc-root">
       <header className="dc-header">
         <div className="dc-brand">
-          <div className="dc-brand-badge">CD</div>
+          <div className="dc-brand-badge">
+            <img
+              src="/icon/CD%20Logo%20TH_White.svg"
+              alt="CD"
+              style={{ height: "62%", width: "auto" }}
+            />
+          </div>
           <div>
             <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: -0.3 }}>Smart Campus · Design Review</div>
             <div
@@ -110,17 +116,16 @@ export default function Home() {
                 height: 42,
                 borderRadius: 10,
                 background: "#0b1a2c",
-                color: "#fff",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontWeight: 700,
-                fontSize: 16,
-                letterSpacing: -0.8,
-                fontFamily: "IBM Plex Mono, monospace",
               }}
             >
-              CD
+              <img
+                src="/icon/CD%20Logo%20TH_White.svg"
+                alt="CD"
+                style={{ height: "62%", width: "auto" }}
+              />
             </div>
             <div>
               <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3 }}>Smart Campus</div>

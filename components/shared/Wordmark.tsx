@@ -9,17 +9,16 @@ export function Wordmark({ size = 14 }: WordmarkProps) {
           height: size * 2.2,
           borderRadius: 8,
           background: "var(--cd-ink)",
-          color: "#fff",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontWeight: 700,
-          fontSize: size * 0.85,
-          letterSpacing: -0.5,
-          fontFamily: "var(--cd-mono)",
         }}
       >
-        CD
+        <img
+          src="/icon/CD%20Logo%20TH_White.svg"
+          alt="CD"
+          style={{ height: "62%", width: "auto" }}
+        />
       </div>
       <div style={{ lineHeight: 1.1 }}>
         <div style={{ fontSize: size, fontWeight: 600, letterSpacing: -0.3, color: "var(--cd-ink)" }}>

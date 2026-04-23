@@ -28,18 +28,17 @@ export function LoginScreen() {
               height: 56,
               borderRadius: 14,
               background: "var(--cd-ink)",
-              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: -1,
-              fontFamily: "var(--cd-mono)",
               marginBottom: 14,
             }}
           >
-            CD
+            <img
+              src="/icon/CD%20Logo%20TH_White.svg"
+              alt="CD"
+              style={{ height: "62%", width: "auto" }}
+            />
           </div>
           <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: -0.6, textAlign: "center" }}>Smart Campus</div>
           <div className="cd-label" style={{ marginTop: 4 }}>Chitralada School · CDS</div>
