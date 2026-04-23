@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { PhoneFrame } from "@/components/shared/PhoneFrame";
 import { DesktopFrame } from "@/components/shared/DesktopFrame";
 import { HomeScreen } from "@/components/mobile/HomeScreen";
@@ -56,9 +57,11 @@ export default function Home() {
       <header className="dc-header">
         <div className="dc-brand">
           <div className="dc-brand-badge">
-            <img
+            <Image
               src="/icon/CD%20Logo%20TH_White.svg"
               alt="CD"
+              width={330}
+              height={407}
               style={{ height: "62%", width: "auto" }}
             />
           </div>
@@ -121,9 +124,11 @@ export default function Home() {
                 justifyContent: "center",
               }}
             >
-              <img
+              <Image
                 src="/icon/CD%20Logo%20TH_White.svg"
                 alt="CD"
+                width={330}
+                height={407}
                 style={{ height: "62%", width: "auto" }}
               />
             </div>

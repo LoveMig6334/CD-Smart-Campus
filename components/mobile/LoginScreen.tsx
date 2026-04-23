@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { MI } from "../shared/MI";
 import { StatusBar } from "../shared/StatusBar";
 
@@ -34,9 +35,11 @@ export function LoginScreen() {
               marginBottom: 14,
             }}
           >
-            <img
+            <Image
               src="/icon/CD%20Logo%20TH_White.svg"
               alt="CD"
+              width={330}
+              height={407}
               style={{ height: "62%", width: "auto" }}
             />
           </div>

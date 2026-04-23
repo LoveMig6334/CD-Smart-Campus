@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type WordmarkProps = { size?: number };
 
 export function Wordmark({ size = 14 }: WordmarkProps) {
@@ -14,9 +16,11 @@ export function Wordmark({ size = 14 }: WordmarkProps) {
           justifyContent: "center",
         }}
       >
-        <img
+        <Image
           src="/icon/CD%20Logo%20TH_White.svg"
           alt="CD"
+          width={330}
+          height={407}
           style={{ height: "62%", width: "auto" }}
         />
       </div>
