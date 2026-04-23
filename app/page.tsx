@@ -13,6 +13,10 @@ import { AdminOverview } from "@/components/admin/AdminOverview";
 import { AdminCalendar } from "@/components/admin/AdminCalendar";
 import { AdminSport } from "@/components/admin/AdminSport";
 import { AdminBooking } from "@/components/admin/AdminBooking";
+import { AdminLunch } from "@/components/admin/AdminLunch";
+import { AdminPortfolio } from "@/components/admin/AdminPortfolio";
+import { AdminLost } from "@/components/admin/AdminLost";
+import { AdminAnnounce } from "@/components/admin/AdminAnnounce";
 
 type ArtboardProps = {
   label: string;
@@ -167,7 +171,7 @@ export default function Home() {
                     letterSpacing: 0.8,
                   }}
                 >
-                  Scroll down → 8 mobile screens + 4 admin desktop views
+                  Scroll down → 8 mobile screens + 8 admin desktop views
                 </span>
               </div>
             </div>
@@ -185,7 +189,7 @@ export default function Home() {
           >
             {[
               { l: "Mobile screens", v: "8", s: "for students" },
-              { l: "Admin views", v: "4", s: "for staff" },
+              { l: "Admin views", v: "8", s: "for staff" },
               { l: "Font family", v: "Plex", s: "IBM thai/en" },
               { l: "Framework", v: "Next", s: "app router" },
             ].map((x, i) => (
@@ -258,6 +262,18 @@ export default function Home() {
         </Artboard>
         <Artboard label="04 · Bookings · ตารางจอง">
           <DesktopFrame url="admin.cds.ac.th/bookings"><AdminBooking /></DesktopFrame>
+        </Artboard>
+        <Artboard label="05 · Lunch Menu · เมนูอาหาร">
+          <DesktopFrame url="admin.cds.ac.th/lunch"><AdminLunch /></DesktopFrame>
+        </Artboard>
+        <Artboard label="06 · Portfolio · โครงงาน">
+          <DesktopFrame url="admin.cds.ac.th/portfolios"><AdminPortfolio /></DesktopFrame>
+        </Artboard>
+        <Artboard label="07 · Lost & Found · ของหาย">
+          <DesktopFrame url="admin.cds.ac.th/lost-found"><AdminLost /></DesktopFrame>
+        </Artboard>
+        <Artboard label="08 · Announcements · LINE OA">
+          <DesktopFrame url="admin.cds.ac.th/announcements"><AdminAnnounce /></DesktopFrame>
         </Artboard>
       </Section>
     </div>

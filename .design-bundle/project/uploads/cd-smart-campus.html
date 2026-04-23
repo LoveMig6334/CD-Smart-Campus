@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CD Smart Campus — Chitralada School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#137fec;--primary-dark:#0f66bd;--royal-blue:#1a56db;
+  --vivid-yellow:#fbbf24;--accent-yellow:#ffb800;
+  --dark-slate:#1e3a5f;--cool-gray:#64748b;
+  --bg-light:#ffffff;--bg-dark:#101922;--card-dark:#1c232b;--foreground:#0f172a;
+  --glass-white:rgba(255,255,255,0.75);--glass-border:rgba(255,255,255,0.6);
+  --glass-shadow:rgba(26,86,219,0.08);
+  --font-display:'Mitr',sans-serif;--font-mono:'Space Mono',monospace;
+}
+html{font-family:var(--font-display);color:var(--foreground);-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--bg-light);min-height:100dvh;overflow-x:hidden}
+::selection{background:rgba(19,127,236,0.3)}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
+.material-symbols-outlined.filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.font-mono{font-family:var(--font-mono)}
+
+/* Mesh gradient background */
+.mesh-bg{
+  background:linear-gradient(135deg,#f8fafc 0%,#ffffff 50%,#f8fafc 100%);
+  position:relative;
+}
+.mesh-bg::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 10%,rgba(26,86,219,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 15%,rgba(100,116,139,0.05) 0%,transparent 50%),
+    radial-gradient(ellipse 55% 45% at 50% 90%,rgba(26,86,219,0.06) 0%,transparent 55%);
+  animation:meshShift 20s ease infinite;
+}
+@keyframes meshShift{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* Glass utilities */
+.glass-card{
+  background:var(--glass-white);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  box-shadow:0 4px 24px -1px rgba(26,86,219,0.06),0 0 1px rgba(26,86,219,0.1);
+  border-radius:1rem;transition:all .2s;
+}
+.glass-card:hover{background:rgba(255,255,255,0.85);box-shadow:0 8px 32px -2px rgba(26,86,219,0.1),0 0 1px rgba(26,86,219,0.12)}
+.glass-navbar{
+  background:rgba(255,255,255,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 4px 30px -2px rgba(26,86,219,0.08),0 1px 2px rgba(0,0,0,0.02);
+}
+.glass-panel{
+  background:rgba(255,255,255,0.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.5);box-shadow:0 2px 16px -1px rgba(26,86,219,0.05);
+}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:.75rem;font-weight:500;font-size:.875rem;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:#fff;color:var(--dark-slate);border:1px solid #e2e8f0}.btn-secondary:hover{background:#f8fafc}
+.btn-danger{background:#dc2626;color:#fff}.btn-danger:hover{background:#b91c1c}
+.btn-pill{border-radius:9999px;padding:.5rem 1.25rem;font-size:.8125rem}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;padding:.125rem .625rem;border-radius:9999px;font-size:.75rem;font-weight:500}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.anim-fade{animation:fadeIn .3s ease-out both}
+.anim-slide{animation:slideUp .4s ease-out both}
+.anim-float{animation:float 6s ease-in-out infinite}
+
+/* Page container */
+.page-wrap{position:relative;z-index:1;max-width:28rem;margin:0 auto;width:100%;padding:0 1rem}
+.page-wrap-lg{position:relative;z-index:1;max-width:80rem;margin:0 auto;width:100%;padding:0 1.5rem}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .2s}
+.modal-content{background:#fff;border-radius:1rem;padding:1.5rem;max-width:28rem;width:100%;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+
+/* Calendar grid */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:.8125rem}
+.cal-day{padding:.5rem .25rem;border-radius:.5rem;cursor:pointer;transition:all .15s;position:relative}
+.cal-day:hover{background:rgba(19,127,236,.08)}
+.cal-day.today{background:var(--primary);color:#fff;font-weight:600}
+.cal-day.has-event::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--primary)}
+.cal-day.today.has-event::after{background:#fff}
+
+/* Sport color cards */
+.sport-card{border-radius:1rem;padding:1.25rem;color:#fff;position:relative;overflow:hidden}
+.sport-card::after{content:'🏆';position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:4rem;opacity:.12;pointer-events:none}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+
+/* Tab active */
+.tab-active{color:var(--primary);border-bottom:2px solid var(--primary)}
+
+/* Input */
+.input{width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:.5rem;font-family:inherit;font-size:.875rem;background:rgba(255,255,255,.7);transition:all .2s;outline:none}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(19,127,236,.15);background:#fff}
+
+/* Bottom nav safe area */
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .bottom-nav{padding-bottom:env(safe-area-inset-bottom)}
+}
+
+/* Desktop breakpoint */
+@media(min-width:768px){
+  .page-wrap{max-width:32rem}
+  .hide-desktop{display:none!important}
+}
+@media(max-width:767px){
+  .hide-mobile{display:none!important}
+}
+
+/* Lost & Found grid */
+.lf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+@media(min-width:640px){.lf-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* Ticket card top bar */
+.ticket-bar{height:4px;background:linear-gradient(90deg,#1a56db,#06b6d4,#fbbf24);border-radius:4px 4px 0 0}
+
+/* Admin stat card */
+.stat-card{position:relative;overflow:hidden}
+.stat-card .watermark{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.06;pointer-events:none;color:var(--royal-blue)}
+
+/* Toggle switch */
+.toggle{position:relative;width:44px;height:24px;background:#cbd5e1;border-radius:9999px;cursor:pointer;transition:.2s;border:none}
+.toggle.on{background:var(--primary)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after{left:22px}
+</style>
+</head>
+<body class="mesh-bg">
+<div id="app"></div>
+<script>
+// ============ SIMPLE SPA ROUTER + REACT-LIKE RENDERING ============
+const state = {
+  page: location.hash.slice(1) || 'home',
+  loggedIn: false,
+  user: null,
+  isAdmin: false,
+  adminTab: 'calendar',
+  bookingTab: 'music',
+  calMonth: new Date().getMonth(),
+  calYear: new Date().getFullYear(),
+  showModal: null,
+  sportFilter: 'all',
+  lostFilter: 'all',
+};
+
+function navigate(page) {
+  state.page = page;
+  location.hash = page;
+  render();
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('hashchange', () => {
+  state.page = location.hash.slice(1) || 'home';
+  render();
+});
+
+// ============ DATA ============
+const EVENTS = [
+  { date: '2026-04-03', title: 'ซ้อมกีฬาสี', color: '#ef4444', icon: 'sports_soccer' },
+  { date: '2026-04-07', title: 'วันสงกรานต์โรงเรียน', color: '#06b6d4', icon: 'water_drop' },
+  { date: '2026-04-10', title: 'Music Day Concert', color: '#8b5cf6', icon: 'music_note' },
+  { date: '2026-04-14', title: 'ปิดเทอม', color: '#f59e0b', icon: 'event' },
+  { date: '2026-04-18', title: 'ประชุมผู้ปกครอง', color: '#10b981', icon: 'groups' },
+  { date: '2026-04-22', title: 'Earth Day Activity', color: '#22c55e', icon: 'eco' },
+  { date: '2026-04-25', title: 'นิทรรศการวิทยาศาสตร์', color: '#3b82f6', icon: 'science' },
+];
+
+const SPORT_COLORS = [
+  { name: 'สีแดง', en: 'Red', color: '#ef4444', bg: 'linear-gradient(135deg,#ef4444,#dc2626)', score: 245, icon: '🔴' },
+  { name: 'สีน้ำเงิน', en: 'Blue', color: '#3b82f6', bg: 'linear-gradient(135deg,#3b82f6,#2563eb)', score: 232, icon: '🔵' },
+  { name: 'สีเขียว', en: 'Green', color: '#22c55e', bg: 'linear-gradient(135deg,#22c55e,#16a34a)', score: 218, icon: '🟢' },
+  { name: 'สีเหลือง', en: 'Yellow', color: '#eab308', bg: 'linear-gradient(135deg,#eab308,#ca8a04)', score: 210, icon: '🟡' },
+];
+
+const SPORT_EVENTS_DATA = [
+  { sport: 'วิ่ง 100 ม.', category: 'กรีฑา', results: [{color:'แดง',place:1},{color:'น้ำเงิน',place:2},{color:'เขียว',place:3},{color:'เหลือง',place:4}]},
+  { sport: 'ฟุตบอล', category: 'กีฬาทีม', results: [{color:'น้ำเงิน',place:1},{color:'แดง',place:2},{color:'เหลือง',place:3},{color:'เขียว',place:4}]},
+  { sport: 'บาสเกตบอล', category: 'กีฬาทีม', results: [{color:'เขียว',place:1},{color:'เหลือง',place:2},{color:'แดง',place:3},{color:'น้ำเงิน',place:4}]},
+  { sport: 'ว่ายน้ำ 50 ม.', category: 'กรีฑา', results: [{color:'แดง',place:1},{color:'เขียว',place:2},{color:'น้ำเงิน',place:3},{color:'เหลือง',place:4}]},
+  { sport: 'วอลเลย์บอล', category: 'กีฬาทีม', results: [{color:'เหลือง',place:1},{color:'น้ำเงิน',place:2},{color:'แดง',place:3},{color:'เขียว',place:4}]},
+  { sport: 'แบดมินตัน', category: 'กีฬาบุคคล', results: [{color:'น้ำเงิน',place:1},{color:'แดง',place:2},{color:'เหลือง',place:3},{color:'เขียว',place:4}]},
+];
+
+const PORTFOLIOS = [
+  { name: 'ปภาวี จ.', year: 'ม.6/1', title: 'โปรเจกต์ AI วิเคราะห์ภาพถ่ายดาวเทียม', tags: ['AI/ML','Python','Research'], img: '🛰️', desc: 'วิจัยการใช้ Deep Learning วิเคราะห์การเปลี่ยนแปลงพื้นที่ป่าจากภาพ Sentinel-2' },
+  { name: 'กันต์ ส.', year: 'ม.6/2', title: 'แอป Smart Gardening IoT', tags: ['IoT','React Native','Arduino'], img: '🌱', desc: 'ระบบรดน้ำอัตโนมัติควบคุมผ่านแอปมือถือ ใช้ sensor วัดความชื้น' },
+  { name: 'พิมพ์ ล.', year: 'ม.6/1', title: 'สารคดีสั้น "เสียงจากคลอง"', tags: ['Film','Documentary','Social'], img: '🎬', desc: 'สารคดีสั้น 15 นาทีเกี่ยวกับชุมชนริมคลองที่กำลังจะหายไป' },
+  { name: 'ธนดล อ.', year: 'ม.6/3', title: 'Research: Bioplastic จากเปลือกกุ้ง', tags: ['Chemistry','Research','Sustainability'], img: '🔬', desc: 'งานวิจัยพัฒนาพลาสติกชีวภาพจากไคโตซานในเปลือกกุ้ง' },
+  { name: 'นภัส ก.', year: 'ม.5/1', title: 'Robot Sumo Competition', tags: ['Robotics','C++','Competition'], img: '🤖', desc: 'ออกแบบและสร้างหุ่นยนต์ซูโม่แข่งขันระดับชาติ ได้รางวัลรองชนะเลิศ' },
+  { name: 'วริษา ช.', year: 'ม.6/2', title: 'แอป CD Library Plus', tags: ['UX/UI','Figma','Flutter'], img: '📚', desc: 'ออกแบบ UX/UI สำหรับระบบห้องสมุดโรงเรียน พร้อม prototype ใน Flutter' },
+];
+
+const LOST_ITEMS = [
+  { title: 'กระเป๋าดินสอสีน้ำเงิน', location: 'ตึก 3 ชั้น 2', date: '31 มี.ค.', status: 'lost', emoji: '✏️' },
+  { title: 'หูฟัง AirPods Pro', location: 'สนามฟุตบอล', date: '30 มี.ค.', status: 'found', emoji: '🎧' },
+  { title: 'แจ็คเก็ตสีดำ Size M', location: 'โรงอาหาร', date: '29 มี.ค.', status: 'lost', emoji: '🧥' },
+  { title: 'กล่องข้าวลาย Totoro', location: 'ห้อง 302', date: '29 มี.ค.', status: 'found', emoji: '🍱' },
+  { title: 'พวงกุญแจรถ Honda', location: 'หน้าห้อง ม.6/1', date: '28 มี.ค.', status: 'lost', emoji: '🔑' },
+  { title: 'ขวดน้ำ Hydro Flask', location: 'สนามบาส', date: '28 มี.ค.', status: 'found', emoji: '💧' },
+  { title: 'นาฬิกา Casio สีทอง', location: 'ห้องน้ำตึก 2', date: '27 มี.ค.', status: 'lost', emoji: '⌚' },
+  { title: 'ร่มพับสีชมพู', location: 'ป้ายรถ', date: '27 มี.ค.', status: 'found', emoji: '☂️' },
+];
+
+const ROOMS = {
+  music: [
+    { id: 'M1', name: 'ห้องซ้อมดนตรี 1', cap: '4 คน', equip: 'เปียโน, กีต้าร์ไฟฟ้า, แอมป์' },
+    { id: 'M2', name: 'ห้องซ้อมดนตรี 2', cap: '6 คน', equip: 'กลอง, เบส, คีย์บอร์ด' },
+    { id: 'M3', name: 'ห้องซ้อมร้อง', cap: '2 คน', equip: 'ไมค์, ลำโพง monitor' },
+    { id: 'M4', name: 'ห้อง Recording Studio', cap: '3 คน', equip: 'Full recording setup' },
+  ],
+  auditory: [
+    { id: 'A1', name: 'ห้องประชุม A (เล็ก)', cap: '10 คน', equip: 'โปรเจกเตอร์, ไวท์บอร์ด' },
+    { id: 'A2', name: 'ห้องประชุม B (กลาง)', cap: '30 คน', equip: 'จอ LED, ระบบเสียง' },
+    { id: 'A3', name: 'หอประชุมใหญ่', cap: '200 คน', equip: 'เวที, ระบบแสงสี, ไมค์ไร้สาย' },
+  ]
+};
+
+const LUNCH_MENU = [
+  { day: 'จันทร์', menu: 'ข้าวมันไก่ + ไข่ต้ม + น้ำซุป', dessert: 'วุ้นมะพร้าว' },
+  { day: 'อังคาร', menu: 'ข้าวผัดกะเพรา + ไข่ดาว', dessert: 'ลอดช่อง' },
+  { day: 'พุธ', menu: 'สปาเก็ตตี้ซอสเนื้อ + สลัด', dessert: 'ผลไม้รวม' },
+  { day: 'พฤหัสฯ', menu: 'ข้าวแกงเขียวหวานไก่ + ปลาทอด', dessert: 'ทับทิมกรอบ' },
+  { day: 'ศุกร์', menu: 'ราเม็งหมูชาชู + เกี๊ยวซ่า', dessert: 'ไอศกรีม' },
+];
+
+const ADMIN_STATS = [
+  { label: 'นักเรียนทั้งหมด', value: '1,247', icon: 'school', color: '#3b82f6' },
+  { label: 'กิจกรรมเดือนนี้', value: '12', icon: 'event', color: '#8b5cf6' },
+  { label: 'การจองห้องวันนี้', value: '8', icon: 'meeting_room', color: '#10b981' },
+  { label: 'ของหาย/เจอ', value: '15', icon: 'search', color: '#f59e0b' },
+];
+
+// ============ COMPONENTS ============
+
+function Logo(size = 'md') {
+  const s = size === 'lg' ? 'font-size:1.5rem' : 'font-size:1.125rem';
+  return `<div style="display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="navigate('home')">
+    <div style="width:${size==='lg'?'44px':'36px'};height:${size==='lg'?'44px':'36px'};background:linear-gradient(135deg,var(--royal-blue),var(--primary));border-radius:.75rem;display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined filled" style="color:#fff;font-size:${size==='lg'?'26px':'20px'}">school</span>
+    </div>
+    <div style="${s};font-weight:600;line-height:1.1">
+      <span style="color:var(--vivid-yellow)">CD</span>
+      <span style="color:var(--royal-blue)"> Smart Campus</span>
+    </div>
+  </div>`;
+}
+
+function BottomNav() {
+  const items = [
+    { icon: 'home', label: 'หน้าหลัก', page: 'home' },
+    { icon: 'calendar_month', label: 'ปฏิทิน', page: 'calendar' },
+    { icon: 'restaurant', label: 'มื้อกลางวัน', page: 'lunchmenu' },
+    { icon: 'meeting_room', label: 'จองห้อง', page: 'booking' },
+    { icon: 'person', label: 'โปรไฟล์', page: state.loggedIn ? 'profile' : 'login' },
+  ];
+  return `<nav class="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:50;height:4rem;display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.6)" >
+    <div class="glass-navbar" style="position:absolute;inset:0;border-radius:0"></div>
+    ${items.map(i => {
+      const active = state.page === i.page;
+      return `<button onclick="navigate('${i.page}')" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:.25rem .5rem;font-family:inherit;transition:all .15s">
+        <span class="material-symbols-outlined ${active?'filled':''}" style="font-size:22px;color:${active?'var(--primary)':'#94a3b8'}">${i.icon}</span>
+        <span style="font-size:10px;font-weight:${active?'500':'400'};color:${active?'var(--primary)':'#94a3b8'}">${i.label}</span>
+      </button>`;
+    }).join('')}
+  </nav>`;
+}
+
+function PageHeader(title, subtitle, rightHtml = '') {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-top:.5rem" class="anim-fade">
+    <div>
+      <h1 style="font-size:1.5rem;font-weight:600;color:var(--dark-slate)">${title}</h1>
+      ${subtitle ? `<p style="font-size:.8125rem;color:var(--cool-gray);margin-top:2px">${subtitle}</p>` : ''}
+    </div>
+    ${rightHtml}
+  </div>`;
+}
+
+function EventCard(ev, idx) {
+  return `<div class="glass-card anim-slide" style="padding:1rem;display:flex;align-items:center;gap:.75rem;animation-delay:${idx*60}ms">
+    <div style="width:44px;height:44px;border-radius:.75rem;background:${ev.color}15;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <span class="material-symbols-outlined" style="color:${ev.color};font-size:22px">${ev.icon}</span>
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:.875rem;font-weight:500;color:var(--dark-slate)">${ev.title}</div>
+      <div style="font-size:.75rem;color:var(--cool-gray);margin-top:2px">${ev.date}</div>
+    </div>
+    <span class="material-symbols-outlined" style="color:#cbd5e1;font-size:18px">chevron_right</span>
+  </div>`;
+}
+
+// ============ PAGES ============
+
+function HomePage() {
+  const today = new Date();
+  const greeting = today.getHours() < 12 ? 'สวัสดีตอนเช้า' : today.getHours() < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น';
+  const upcoming = EVENTS.slice(0, 3);
+
+  const quickLinks = [
+    { icon: 'calendar_month', label: 'ปฏิทิน', page: 'calendar', color: '#3b82f6' },
+    { icon: 'emoji_events', label: 'กีฬาสี', page: 'colorsport', color: '#ef4444' },
+    { icon: 'work', label: 'Portfolio', page: 'ports', color: '#8b5cf6' },
+    { icon: 'search', label: 'ของหาย', page: 'lost-find', color: '#f59e0b' },
+    { icon: 'meeting_room', label: 'จองห้อง', page: 'booking', color: '#10b981' },
+    { icon: 'restaurant', label: 'เมนูอาหาร', page: 'lunchmenu', color: '#06b6d4' },
+    { icon: 'music_note', label: 'Music Day', page: 'musicday', color: '#ec4899' },
+    { icon: 'login', label: state.loggedIn ? 'Dashboard' : 'เข้าสู่ระบบ', page: state.loggedIn ? 'dashboard' : 'login', color: '#64748b' },
+  ];
+
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem" class="anim-fade">
+      ${Logo()}
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <button onclick="navigate('login')" style="width:36px;height:36px;border-radius:50%;background:rgba(26,86,219,.08);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--royal-blue)">notifications</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Greeting Banner -->
+    <div class="glass-card anim-slide" style="padding:1.25rem;margin-bottom:1.5rem;background:linear-gradient(135deg,rgba(26,86,219,.08),rgba(6,182,212,.06));position:relative;overflow:hidden">
+      <div style="position:relative;z-index:1">
+        <p style="font-size:.8125rem;color:var(--cool-gray)">${greeting} ☀️</p>
+        <h2 style="font-size:1.25rem;font-weight:600;color:var(--dark-slate);margin-top:.25rem">${state.loggedIn ? state.user : 'ยินดีต้อนรับสู่ CD Campus'}</h2>
+        <p style="font-size:.75rem;color:var(--cool-gray);margin-top:.5rem">โรงเรียนจิตรลดา • ภาคเรียนที่ 1/2569</p>
+      </div>
+      <div style="position:absolute;right:-5px;bottom:-5px;font-size:4rem;opacity:.08;pointer-events:none">🏫</div>
+    </div>
+
+    <!-- Quick Links -->
+    <div style="margin-bottom:1.5rem" class="anim-slide" >
+      <h3 style="font-size:.875rem;font-weight:600;color:var(--dark-slate);margin-bottom:.75rem">เมนูลัด</h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.625rem">
+        ${quickLinks.map((l,i) => `<button onclick="navigate('${l.page}')" style="display:flex;flex-direction:column;align-items:center;gap:.375rem;padding:.75rem .25rem;background:none;border:none;cursor:pointer;font-family:inherit;transition:all .15s;animation:slideUp .4s ease-out ${i*40}ms both" class="glass-card" >
+          <div style="width:40px;height:40px;border-radius:.75rem;background:${l.color}12;display:flex;align-items:center;justify-content:center">
+            <span class="material-symbols-outlined" style="color:${l.color};font-size:20px">${l.icon}</span>
+          </div>
+          <span style="font-size:.6875rem;color:var(--dark-slate);font-weight:400;text-align:center;line-height:1.2">${l.label}</span>
+        </button>`).join('')}
+      </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="anim-slide" style="animation-delay:200ms;margin-bottom:1.5rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+        <h3 style="font-size:.875rem;font-weight:600;color:var(--dark-slate)">กิจกรรมที่จะมาถึง</h3>
+        <button onclick="navigate('calendar')" style="font-size:.75rem;color:var(--primary);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500">ดูทั้งหมด →</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.625rem">
+        ${upcoming.map((e,i) => EventCard(e,i)).join('')}
+      </div>
+    </div>
+
+    <!-- Sport Scoreboard Peek -->
+    <div class="anim-slide" style="animation-delay:300ms">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+        <h3 style="font-size:.875rem;font-weight:600;color:var(--dark-slate)">🏆 คะแนนกีฬาสี</h3>
+        <button onclick="navigate('colorsport')" style="font-size:.75rem;color:var(--primary);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500">รายละเอียด →</button>
+      </div>
+      <div class="glass-card" style="padding:1rem">
+        <div style="display:flex;justify-content:space-around">
+          ${SPORT_COLORS.map(c => `<div style="text-align:center">
+            <div style="font-size:1.5rem">${c.icon}</div>
+            <div style="font-size:1.125rem;font-weight:700;color:${c.color};margin-top:.25rem;font-family:var(--font-mono)">${c.score}</div>
+            <div style="font-size:.625rem;color:var(--cool-gray)">${c.name}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function CalendarPage() {
+  const m = state.calMonth;
+  const y = state.calYear;
+  const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  const days = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const today = new Date();
+
+  const eventDates = EVENTS.filter(e => {
+    const d = new Date(e.date);
+    return d.getMonth() === m && d.getFullYear() === y;
+  }).map(e => new Date(e.date).getDate());
+
+  const monthEvents = EVENTS.filter(e => {
+    const d = new Date(e.date);
+    return d.getMonth() === m && d.getFullYear() === y;
+  });
+
+  let calCells = days.map(d => `<div style="padding:.5rem;font-size:.6875rem;color:var(--cool-gray);font-weight:500">${d}</div>`).join('');
+  for (let i = 0; i < firstDay; i++) calCells += `<div></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+    const hasEvent = eventDates.includes(d);
+    calCells += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}">${d}</div>`;
+  }
+
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('ปฏิทินกิจกรรม', `${months[m]} ${y + 543}`)}
+
+    <div class="glass-card anim-slide" style="padding:1rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <button onclick="state.calMonth--;if(state.calMonth<0){state.calMonth=11;state.calYear--}render()" style="background:none;border:none;cursor:pointer;padding:.25rem">
+          <span class="material-symbols-outlined" style="color:var(--primary)">chevron_left</span>
+        </button>
+        <span style="font-weight:600;color:var(--dark-slate)">${months[m]} ${y + 543}</span>
+        <button onclick="state.calMonth++;if(state.calMonth>11){state.calMonth=0;state.calYear++}render()" style="background:none;border:none;cursor:pointer;padding:.25rem">
+          <span class="material-symbols-outlined" style="color:var(--primary)">chevron_right</span>
+        </button>
+      </div>
+      <div class="cal-grid">${calCells}</div>
+    </div>
+
+    <div class="anim-slide" style="animation-delay:100ms">
+      <h3 style="font-size:.875rem;font-weight:600;color:var(--dark-slate);margin-bottom:.75rem">กิจกรรมในเดือนนี้</h3>
+      <div style="display:flex;flex-direction:column;gap:.625rem">
+        ${monthEvents.length ? monthEvents.map((e,i) => EventCard(e,i)).join('') : '<p style="text-align:center;color:var(--cool-gray);font-size:.875rem;padding:2rem 0">ไม่มีกิจกรรมในเดือนนี้</p>'}
+      </div>
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function PortfolioPage() {
+  const tagColors = { 'AI/ML': '#8b5cf6', 'Python': '#3b82f6', 'Research': '#10b981', 'IoT': '#06b6d4', 'React Native': '#06b6d4', 'Arduino': '#f59e0b', 'Film': '#ec4899', 'Documentary': '#ef4444', 'Social': '#f97316', 'Chemistry': '#22c55e', 'Sustainability': '#10b981', 'Robotics': '#6366f1', 'C++': '#3b82f6', 'Competition': '#ef4444', 'UX/UI': '#ec4899', 'Figma': '#a855f7', 'Flutter': '#06b6d4' };
+
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('Portfolio รุ่นพี่', 'ผลงานเด่นจากรุ่นพี่จิตรลดา')}
+    <div style="display:flex;flex-direction:column;gap:.875rem">
+      ${PORTFOLIOS.map((p, i) => `<div class="glass-card anim-slide" style="padding:1.25rem;animation-delay:${i * 80}ms">
+        <div style="display:flex;gap:.75rem;margin-bottom:.75rem">
+          <div style="width:48px;height:48px;border-radius:.75rem;background:linear-gradient(135deg,rgba(26,86,219,.08),rgba(139,92,246,.08));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">${p.img}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.9375rem;font-weight:600;color:var(--dark-slate)">${p.title}</div>
+            <div style="font-size:.75rem;color:var(--cool-gray);margin-top:2px">${p.name} • ${p.year}</div>
+          </div>
+        </div>
+        <p style="font-size:.8125rem;color:#475569;line-height:1.5;margin-bottom:.75rem">${p.desc}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.375rem">
+          ${p.tags.map(t => `<span class="badge" style="background:${(tagColors[t]||'#64748b')}12;color:${tagColors[t]||'#64748b'}">${t}</span>`).join('')}
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function ColorSportPage() {
+  const maxScore = Math.max(...SPORT_COLORS.map(c => c.score));
+  const cats = ['all', ...new Set(SPORT_EVENTS_DATA.map(e => e.category))];
+  const filtered = state.sportFilter === 'all' ? SPORT_EVENTS_DATA : SPORT_EVENTS_DATA.filter(e => e.category === state.sportFilter);
+  const colorMap = { 'แดง': '#ef4444', 'น้ำเงิน': '#3b82f6', 'เขียว': '#22c55e', 'เหลือง': '#eab308' };
+  const placeIcons = ['🥇','🥈','🥉','4th'];
+
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('🏆 กีฬาสี 2569', 'ผลการแข่งขันกีฬาสีประจำปี')}
+
+    <!-- Scoreboard -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.625rem;margin-bottom:1.25rem">
+      ${SPORT_COLORS.map((c, i) => `<div class="sport-card anim-slide" style="background:${c.bg};animation-delay:${i * 60}ms">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:.75rem;opacity:.8">${c.name}</div>
+            <div style="font-size:1.75rem;font-weight:700;font-family:var(--font-mono)">${c.score}</div>
+          </div>
+          <div style="font-size:2rem">${c.icon}</div>
+        </div>
+        <div style="margin-top:.5rem;background:rgba(255,255,255,.2);height:4px;border-radius:4px;overflow:hidden">
+          <div style="height:100%;background:rgba(255,255,255,.6);width:${(c.score/maxScore*100).toFixed(0)}%;border-radius:4px;transition:width .6s"></div>
+        </div>
+      </div>`).join('')}
+    </div>
+
+    <!-- Filter -->
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;overflow-x:auto;padding-bottom:.25rem" class="anim-slide" >
+      ${cats.map(c => `<button onclick="state.sportFilter='${c}';render()" class="btn btn-pill ${state.sportFilter === c ? '' : 'btn-secondary'}" style="${state.sportFilter === c ? 'background:var(--primary);color:#fff' : ''}">${c === 'all' ? 'ทั้งหมด' : c}</button>`).join('')}
+    </div>
+
+    <!-- Results -->
+    <div style="display:flex;flex-direction:column;gap:.625rem">
+      ${filtered.map((ev, i) => `<div class="glass-card anim-slide" style="padding:1rem;animation-delay:${i * 60}ms">
+        <div style="font-size:.875rem;font-weight:600;color:var(--dark-slate);margin-bottom:.5rem">${ev.sport}</div>
+        <div style="font-size:.6875rem;color:var(--cool-gray);margin-bottom:.625rem">${ev.category}</div>
+        <div style="display:flex;gap:.625rem">
+          ${ev.results.map((r,ri) => `<div style="flex:1;text-align:center;padding:.375rem;border-radius:.5rem;background:${colorMap[r.color]}08">
+            <div style="font-size:.875rem">${placeIcons[ri]}</div>
+            <div style="width:12px;height:12px;border-radius:50%;background:${colorMap[r.color]};margin:.25rem auto"></div>
+          </div>`).join('')}
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function LunchMenuPage() {
+  const todayIdx = new Date().getDay() - 1;
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('🍽️ เมนูอาหารกลางวัน', 'ประจำสัปดาห์')}
+
+    <!-- Image placeholder -->
+    <div class="glass-card anim-slide" style="padding:1rem;margin-bottom:1.25rem;text-align:center">
+      <div style="background:linear-gradient(135deg,rgba(6,182,212,.06),rgba(251,191,36,.06));border-radius:.75rem;padding:3rem 1rem;border:2px dashed #e2e8f0">
+        <span class="material-symbols-outlined" style="font-size:3rem;color:var(--cool-gray)">image</span>
+        <p style="font-size:.8125rem;color:var(--cool-gray);margin-top:.5rem">รูปเมนูอาหารประจำสัปดาห์</p>
+        <p style="font-size:.6875rem;color:#94a3b8;margin-top:.25rem">อัปโหลดโดยฝ่ายโภชนาการ</p>
+      </div>
+    </div>
+
+    <!-- Daily menu cards -->
+    <div style="display:flex;flex-direction:column;gap:.625rem">
+      ${LUNCH_MENU.map((m, i) => `<div class="glass-card anim-slide" style="padding:1rem;animation-delay:${i * 60}ms;${i === todayIdx ? 'border-left:3px solid var(--primary);background:rgba(19,127,236,.04)' : ''}">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <div style="min-width:4rem">
+            <div style="font-size:.8125rem;font-weight:600;color:${i === todayIdx ? 'var(--primary)' : 'var(--dark-slate)'}">${m.day}</div>
+            ${i === todayIdx ? '<span class="badge" style="background:rgba(19,127,236,.1);color:var(--primary);margin-top:.25rem;font-size:.625rem">วันนี้</span>' : ''}
+          </div>
+          <div style="flex:1">
+            <div style="font-size:.8125rem;color:var(--dark-slate)">${m.menu}</div>
+            <div style="font-size:.75rem;color:var(--cool-gray);margin-top:.25rem">🍰 ${m.dessert}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function BookingPage() {
+  const tab = state.bookingTab;
+  const rooms = ROOMS[tab];
+  const slots = ['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00'];
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('จองห้อง', 'เลือกห้องและเวลาที่ต้องการ')}
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid #e2e8f0;margin-bottom:1.25rem" class="anim-fade">
+      <button onclick="state.bookingTab='music';render()" style="flex:1;padding:.75rem;font-family:inherit;font-size:.875rem;background:none;border:none;cursor:pointer;font-weight:500;transition:all .2s;${tab==='music'?'color:var(--primary);border-bottom:2px solid var(--primary)':'color:var(--cool-gray)'}">
+        <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:.25rem">music_note</span>ห้องดนตรี
+      </button>
+      <button onclick="state.bookingTab='auditory';render()" style="flex:1;padding:.75rem;font-family:inherit;font-size:.875rem;background:none;border:none;cursor:pointer;font-weight:500;transition:all .2s;${tab==='auditory'?'color:var(--primary);border-bottom:2px solid var(--primary)':'color:var(--cool-gray)'}">
+        <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:.25rem">groups</span>ห้องประชุม
+      </button>
+    </div>
+
+    <!-- Room Cards -->
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      ${rooms.map((r, i) => `<div class="glass-card anim-slide" style="padding:1.25rem;animation-delay:${i*80}ms">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:.75rem">
+          <div>
+            <div style="font-size:.9375rem;font-weight:600;color:var(--dark-slate)">${r.name}</div>
+            <div style="font-size:.75rem;color:var(--cool-gray);margin-top:.25rem">
+              <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">person</span> ${r.cap}
+            </div>
+          </div>
+          <span class="badge" style="background:rgba(16,185,129,.1);color:#059669">ว่าง</span>
+        </div>
+        <div style="font-size:.75rem;color:#475569;margin-bottom:.75rem">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;color:var(--cool-gray)">speaker</span> ${r.equip}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.375rem;margin-bottom:.75rem">
+          ${slots.map((s,si) => {
+            const booked = Math.random() > 0.65;
+            const opac = booked ? 0.5 : 1;
+            const click = booked ? 'disabled' : 'onclick="openBooking(\'' + r.id + '\',' + si + ')"';
+            return '<button style="padding:.25rem .5rem;font-size:.6875rem;border-radius:.375rem;border:1px solid ' + (booked ? '#fecaca' : '#e2e8f0') + ';background:' + (booked ? '#fef2f2' : '#fff') + ';color:' + (booked ? '#dc2626' : 'var(--dark-slate)') + ';cursor:' + (booked ? 'not-allowed' : 'pointer') + ';font-family:inherit;opacity:' + opac + '" ' + click + '>' + s + '</button>';
+          }).join('')}
+        </div>
+        <button class="btn btn-primary" style="width:100%;font-size:.8125rem" onclick="${state.loggedIn ? "openBooking('" + r.id + "')" : "navigate('login')"}">
+          <span class="material-symbols-outlined" style="font-size:18px">event_available</span>
+          ${state.loggedIn ? 'จองห้องนี้' : 'เข้าสู่ระบบเพื่อจอง'}
+        </button>
+      </div>`).join('')}
+    </div>
+  </div>${BottomNav()}${state.showModal && state.showModal.startsWith('booking-') ? BookingModal() : ''}`;
+}
+
+function openBooking(roomId, slotIdx) {
+  state.showModal = 'booking-' + roomId + (slotIdx !== undefined ? '-' + slotIdx : '');
+  render();
+}
+
+function BookingModal() {
+  return `<div class="modal-backdrop" onclick="state.showModal=null;render()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h3 style="font-size:1.125rem;font-weight:600;color:var(--dark-slate)">ยืนยันการจอง</h3>
+        <button onclick="state.showModal=null;render()" style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="color:var(--cool-gray)">close</span></button>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-size:.8125rem;color:#475569;font-weight:500">วันที่</label>
+        <input type="date" class="input" style="margin-top:.375rem" value="2026-04-03">
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-size:.8125rem;color:#475569;font-weight:500">เวลา</label>
+        <select class="input" style="margin-top:.375rem">
+          <option>08:00 - 09:00</option><option>09:00 - 10:00</option><option>10:00 - 11:00</option>
+          <option>11:00 - 12:00</option><option>12:00 - 13:00</option><option>13:00 - 14:00</option>
+        </select>
+      </div>
+      <div style="margin-bottom:1.25rem">
+        <label style="font-size:.8125rem;color:#475569;font-weight:500">หมายเหตุ</label>
+        <input type="text" class="input" style="margin-top:.375rem" placeholder="เช่น ซ้อมวงดนตรี...">
+      </div>
+      <div style="display:flex;gap:.75rem">
+        <button class="btn btn-secondary" style="flex:1" onclick="state.showModal=null;render()">ยกเลิก</button>
+        <button class="btn btn-primary" style="flex:1" onclick="alert('✅ จองสำเร็จ! (Prototype)');state.showModal=null;render()">
+          <span class="material-symbols-outlined" style="font-size:18px">check</span> ยืนยัน
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function LostFoundPage() {
+  const filtered = state.lostFilter === 'all' ? LOST_ITEMS : LOST_ITEMS.filter(i => i.status === state.lostFilter);
+  const addBtn = '<button class="btn btn-primary btn-pill" style="font-size:.75rem;padding:.375rem .75rem" onclick="' + (state.loggedIn ? "alert('เปิดฟอร์มแจ้ง (Prototype)')" : "navigate('login')") + '"><span class="material-symbols-outlined" style="font-size:16px">add</span> แจ้ง</button>';
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem">
+    ${PageHeader('ของหาย / ของเจอ', 'ประกาศของหายและของที่เจอ', addBtn)}
+
+    <!-- Filter -->
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem" class="anim-fade">
+      ${['all','lost','found'].map(f => `<button onclick="state.lostFilter='${f}';render()" class="btn btn-pill ${state.lostFilter===f?'':'btn-secondary'}" style="font-size:.75rem;${state.lostFilter===f?'background:var(--primary);color:#fff':''}">${f==='all'?'ทั้งหมด':f==='lost'?'🔴 ของหาย':'🟢 ของเจอ'}</button>`).join('')}
+    </div>
+
+    <!-- Grid -->
+    <div class="lf-grid">
+      ${filtered.map((item, i) => `<div class="glass-card anim-slide" style="padding:1rem;animation-delay:${i*60}ms;cursor:pointer">
+        <div style="text-align:center;margin-bottom:.75rem">
+          <div style="width:56px;height:56px;margin:0 auto;border-radius:.75rem;background:${item.status==='lost'?'#fef2f2':'#f0fdf4'};display:flex;align-items:center;justify-content:center;font-size:1.75rem">${item.emoji}</div>
+        </div>
+        <div style="font-size:.8125rem;font-weight:600;color:var(--dark-slate);text-align:center;line-height:1.3">${item.title}</div>
+        <div style="font-size:.6875rem;color:var(--cool-gray);text-align:center;margin-top:.375rem">
+          <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle">location_on</span> ${item.location}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.5rem">
+          <span style="font-size:.625rem;color:#94a3b8">${item.date}</span>
+          <span class="badge" style="font-size:.625rem;background:${item.status==='lost'?'#fef2f2':'#f0fdf4'};color:${item.status==='lost'?'#dc2626':'#16a34a'}">${item.status==='lost'?'หาย':'เจอ'}</span>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>${BottomNav()}`;
+}
+
+function LoginPage() {
+  return `<div class="page-wrap" style="padding-top:3rem;padding-bottom:2rem;min-height:100dvh;display:flex;flex-direction:column;justify-content:center">
+    <div class="anim-slide" style="text-align:center;margin-bottom:2.5rem">
+      <div style="width:80px;height:80px;margin:0 auto;border-radius:1.25rem;background:linear-gradient(135deg,var(--royal-blue),var(--primary));display:flex;align-items:center;justify-content:center" class="anim-float">
+        <span class="material-symbols-outlined filled" style="color:#fff;font-size:2.5rem">school</span>
+      </div>
+      <h1 style="font-size:2rem;font-weight:700;margin-top:1.25rem">
+        <span style="color:var(--vivid-yellow)">CD</span>
+        <span style="color:var(--royal-blue)"> Smart Campus</span>
+      </h1>
+      <p style="color:var(--cool-gray);font-size:.875rem;margin-top:.5rem">ระบบจัดการกิจกรรมโรงเรียนจิตรลดา</p>
+    </div>
+
+    <div class="glass-card anim-slide" style="padding:2rem;animation-delay:150ms;border-radius:1.5rem">
+      <h2 style="font-size:1.25rem;font-weight:600;color:var(--dark-slate);text-align:center;margin-bottom:1.5rem">เข้าสู่ระบบ</h2>
+
+      <button onclick="doLogin()" style="width:100%;padding:.875rem;border-radius:.75rem;border:1px solid #e2e8f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.75rem;font-family:inherit;font-size:.875rem;font-weight:500;color:var(--dark-slate);transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.06)" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        เข้าสู่ระบบด้วย Google
+      </button>
+
+      <div style="margin-top:1.25rem;padding:.875rem;border-radius:.625rem;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2)">
+        <p style="font-size:.75rem;color:#92400e;display:flex;align-items:start;gap:.5rem">
+          <span class="material-symbols-outlined" style="font-size:16px;flex-shrink:0;margin-top:1px">info</span>
+          ใช้อีเมลโรงเรียนเท่านั้น (0XXXXX@cds.ac.th)
+        </p>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:.75rem;color:#94a3b8;margin-top:2rem">
+      Powered by <span style="color:var(--royal-blue);font-weight:500">CD Smart Campus</span> • Chitralada School
+    </p>
+  </div>`;
+}
+
+function doLogin() {
+  const email = prompt('กรอกอีเมลโรงเรียน (0XXXXX@cds.ac.th):');
+  if (!email) return;
+  if (!email.match(/^0\d{4,5}@cds\.ac\.th$/)) {
+    alert('❌ กรุณาใช้อีเมลโรงเรียนเท่านั้น\nรูปแบบ: 0XXXXX@cds.ac.th');
+    return;
+  }
+  state.loggedIn = true;
+  state.user = email.split('@')[0];
+  const isAdmin = email.startsWith('0admin') || email.startsWith('00000');
+  state.isAdmin = isAdmin;
+  navigate(isAdmin ? 'dashboard' : 'home');
+}
+
+function DashboardPage() {
+  if (!state.loggedIn || !state.isAdmin) return LoginPage();
+  const tabs = [
+    { id: 'calendar', label: 'ปฏิทิน', icon: 'calendar_month' },
+    { id: 'sport', label: 'กีฬาสี', icon: 'emoji_events' },
+    { id: 'pr', label: 'ประชาสัมพันธ์', icon: 'campaign' },
+    { id: 'portfolio', label: 'Portfolio', icon: 'work' },
+    { id: 'lunchmenu', label: 'เมนูอาหาร', icon: 'restaurant' },
+  ];
+  const at = state.adminTab;
+
+  return `<div style="min-height:100dvh;display:flex;flex-direction:column">
+    <!-- Admin Navbar -->
+    <div style="padding:.75rem 1rem .75rem;position:sticky;top:0;z-index:40">
+      <div class="glass-navbar" style="border-radius:1rem;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between">
+        ${Logo()}
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span class="badge" style="background:rgba(239,68,68,.1);color:#dc2626;font-size:.6875rem">Admin</span>
+          <button onclick="state.loggedIn=false;state.isAdmin=false;navigate('home')" style="background:none;border:none;cursor:pointer" title="ออกจากระบบ">
+            <span class="material-symbols-outlined" style="color:var(--cool-gray)">logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-wrap-lg" style="flex:1;padding-top:.5rem;padding-bottom:2rem">
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.5rem" class="anim-slide">
+        ${ADMIN_STATS.map((s,i) => `<div class="glass-card stat-card" style="padding:1rem;animation-delay:${i*60}ms">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+            <div style="width:36px;height:36px;border-radius:.625rem;background:${s.color}12;display:flex;align-items:center;justify-content:center">
+              <span class="material-symbols-outlined" style="color:${s.color};font-size:18px">${s.icon}</span>
+            </div>
+          </div>
+          <div style="font-size:1.5rem;font-weight:700;color:var(--dark-slate);font-family:var(--font-mono)">${s.value}</div>
+          <div style="font-size:.6875rem;color:var(--cool-gray)">${s.label}</div>
+          <span class="material-symbols-outlined watermark">${s.icon}</span>
+        </div>`).join('')}
+      </div>
+
+      <!-- Admin Tabs -->
+      <div style="display:flex;gap:.375rem;overflow-x:auto;margin-bottom:1.25rem;padding-bottom:.25rem" class="anim-fade">
+        ${tabs.map(t => `<button onclick="state.adminTab='${t.id}';render()" class="btn btn-pill ${at===t.id?'':'btn-secondary'}" style="white-space:nowrap;font-size:.75rem;${at===t.id?'background:var(--primary);color:#fff':''}">
+          <span class="material-symbols-outlined" style="font-size:16px">${t.icon}</span> ${t.label}
+        </button>`).join('')}
+      </div>
+
+      <!-- Admin Content -->
+      <div class="glass-card anim-slide" style="padding:1.5rem;min-height:300px">
+        ${at === 'calendar' ? AdminCalendar() : ''}
+        ${at === 'sport' ? AdminSport() : ''}
+        ${at === 'pr' ? AdminPR() : ''}
+        ${at === 'portfolio' ? AdminPortfolio() : ''}
+        ${at === 'lunchmenu' ? AdminLunchMenu() : ''}
+      </div>
+    </div>
+
+    <div class="glass-panel" style="text-align:center;padding:1rem;font-size:.75rem;color:var(--cool-gray)">
+      CD Smart Campus Admin Panel • Chitralada School © 2569
+    </div>
+  </div>`;
+}
+
+function AdminCalendar() {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <h3 style="font-size:1rem;font-weight:600;color:var(--dark-slate)">จัดการปฏิทินกิจกรรม</h3>
+    <button class="btn btn-primary" style="font-size:.8125rem" onclick="alert('เพิ่มกิจกรรมใหม่ (Prototype)')">
+      <span class="material-symbols-outlined" style="font-size:18px">add</span> เพิ่มกิจกรรม
+    </button>
+  </div>
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:.8125rem">
+      <thead><tr style="border-bottom:1px solid #e2e8f0">
+        <th style="padding:.625rem;text-align:left;color:var(--cool-gray);font-weight:500">วันที่</th>
+        <th style="padding:.625rem;text-align:left;color:var(--cool-gray);font-weight:500">กิจกรรม</th>
+        <th style="padding:.625rem;text-align:center;color:var(--cool-gray);font-weight:500">จัดการ</th>
+      </tr></thead>
+      <tbody>
+        ${EVENTS.map(e => `<tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:.625rem;white-space:nowrap;font-family:var(--font-mono);font-size:.75rem">${e.date}</td>
+          <td style="padding:.625rem">
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <span class="material-symbols-outlined" style="font-size:16px;color:${e.color}">${e.icon}</span>
+              ${e.title}
+            </div>
+          </td>
+          <td style="padding:.625rem;text-align:center">
+            <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:var(--primary)">edit</span></button>
+            <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:#dc2626">delete</span></button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function AdminSport() {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <h3 style="font-size:1rem;font-weight:600;color:var(--dark-slate)">จัดการผลกีฬาสี</h3>
+    <button class="btn btn-primary" style="font-size:.8125rem" onclick="alert('สร้าง event กีฬาใหม่ (Prototype)')">
+      <span class="material-symbols-outlined" style="font-size:18px">add</span> สร้าง Event
+    </button>
+  </div>
+  <!-- Score update -->
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.25rem">
+    ${SPORT_COLORS.map(c => `<div style="padding:.75rem;border-radius:.75rem;border:1px solid #e2e8f0;display:flex;align-items:center;gap:.75rem">
+      <div style="font-size:1.25rem">${c.icon}</div>
+      <div style="flex:1">
+        <div style="font-size:.75rem;color:var(--cool-gray)">${c.name}</div>
+        <input type="number" value="${c.score}" class="input" style="padding:.375rem .5rem;font-size:.875rem;font-family:var(--font-mono);margin-top:.25rem">
+      </div>
+    </div>`).join('')}
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="alert('อัปเดตคะแนนสำเร็จ (Prototype)')">
+    <span class="material-symbols-outlined" style="font-size:18px">save</span> บันทึกคะแนน
+  </button>
+  <!-- Recent events -->
+  <h4 style="font-size:.875rem;font-weight:600;color:var(--dark-slate);margin-top:1.25rem;margin-bottom:.75rem">รายการแข่งขันล่าสุด</h4>
+  ${SPORT_EVENTS_DATA.slice(0,3).map(ev => `<div style="padding:.625rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;font-size:.8125rem">
+    <span>${ev.sport} <span style="color:var(--cool-gray);font-size:.6875rem">(${ev.category})</span></span>
+    <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:var(--primary)">edit</span></button>
+  </div>`).join('')}`;
+}
+
+function AdminPR() {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <h3 style="font-size:1rem;font-weight:600;color:var(--dark-slate)">ประชาสัมพันธ์</h3>
+    <button class="btn btn-primary" style="font-size:.8125rem" onclick="alert('สร้างประกาศใหม่ (Prototype)')">
+      <span class="material-symbols-outlined" style="font-size:18px">add</span> สร้างประกาศ
+    </button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:.75rem">
+    ${[
+      { title: 'ประกาศเปิดรับสมัคร Music Day 2569', status: 'เผยแพร่', date: '28 มี.ค. 69', ch: 'LINE OA' },
+      { title: 'แจ้งกำหนดการกีฬาสี ปี 2569', status: 'เผยแพร่', date: '25 มี.ค. 69', ch: 'LINE OA, Website' },
+      { title: 'ขอเชิญร่วมงาน Science Fair', status: 'แบบร่าง', date: '24 มี.ค. 69', ch: '-' },
+    ].map(a => `<div style="padding:1rem;border:1px solid #e2e8f0;border-radius:.75rem;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:.875rem;font-weight:500;color:var(--dark-slate)">${a.title}</div>
+        <div style="font-size:.6875rem;color:var(--cool-gray);margin-top:.25rem">${a.date} • ${a.ch}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="badge" style="background:${a.status==='เผยแพร่'?'rgba(16,185,129,.1)':'rgba(245,158,11,.1)'};color:${a.status==='เผยแพร่'?'#059669':'#d97706'}">${a.status}</span>
+        <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:var(--primary)">edit</span></button>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function AdminPortfolio() {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <h3 style="font-size:1rem;font-weight:600;color:var(--dark-slate)">จัดการ Portfolio</h3>
+    <button class="btn btn-primary" style="font-size:.8125rem" onclick="alert('เพิ่ม Portfolio (Prototype)')">
+      <span class="material-symbols-outlined" style="font-size:18px">add</span> เพิ่มผลงาน
+    </button>
+  </div>
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:.8125rem">
+      <thead><tr style="border-bottom:1px solid #e2e8f0">
+        <th style="padding:.625rem;text-align:left;color:var(--cool-gray);font-weight:500">ชื่อผลงาน</th>
+        <th style="padding:.625rem;text-align:left;color:var(--cool-gray);font-weight:500">นักเรียน</th>
+        <th style="padding:.625rem;text-align:center;color:var(--cool-gray);font-weight:500">จัดการ</th>
+      </tr></thead>
+      <tbody>
+        ${PORTFOLIOS.map(p => `<tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:.625rem">${p.title}</td>
+          <td style="padding:.625rem;white-space:nowrap">${p.name} (${p.year})</td>
+          <td style="padding:.625rem;text-align:center">
+            <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:var(--primary)">edit</span></button>
+            <button style="background:none;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:18px;color:#dc2626">delete</span></button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function AdminLunchMenu() {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <h3 style="font-size:1rem;font-weight:600;color:var(--dark-slate)">จัดการเมนูอาหาร</h3>
+    <button class="btn btn-primary" style="font-size:.8125rem" onclick="alert('อัปโหลดรูปเมนู (Prototype)')">
+      <span class="material-symbols-outlined" style="font-size:18px">upload</span> อัปโหลดรูป
+    </button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:.625rem">
+    ${LUNCH_MENU.map(m => `<div style="padding:.75rem;border:1px solid #e2e8f0;border-radius:.625rem;display:flex;align-items:center;gap:.75rem">
+      <div style="min-width:4rem;font-weight:600;font-size:.8125rem;color:var(--dark-slate)">${m.day}</div>
+      <div style="flex:1">
+        <input type="text" value="${m.menu}" class="input" style="padding:.375rem .5rem;font-size:.8125rem;margin-bottom:.25rem">
+        <input type="text" value="${m.dessert}" class="input" style="padding:.375rem .5rem;font-size:.75rem;color:var(--cool-gray)">
+      </div>
+    </div>`).join('')}
+  </div>
+  <button class="btn btn-primary" style="width:100%;margin-top:1rem" onclick="alert('บันทึกเมนูสำเร็จ (Prototype)')">
+    <span class="material-symbols-outlined" style="font-size:18px">save</span> บันทึกเมนู
+  </button>`;
+}
+
+function MusicDayPage() {
+  return `<div class="page-wrap" style="padding-bottom:6rem;padding-top:1rem;min-height:80dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+    <div class="anim-float" style="margin-bottom:1.5rem">
+      <div style="width:80px;height:80px;margin:0 auto;border-radius:1.25rem;background:linear-gradient(135deg,#ec4899,#8b5cf6);display:flex;align-items:center;justify-content:center">
+        <span class="material-symbols-outlined filled" style="color:#fff;font-size:2.5rem">music_note</span>
+      </div>
+    </div>
+    <h1 style="font-size:1.75rem;font-weight:700;color:var(--dark-slate)" class="anim-slide">Music Day 2569</h1>
+    <p style="font-size:.9375rem;color:var(--cool-gray);margin-top:.75rem;max-width:20rem" class="anim-slide" style="animation-delay:100ms">
+      เร็วๆ นี้...
+    </p>
+    <p style="font-size:.8125rem;color:#94a3b8;margin-top:.5rem" class="anim-slide">🎵 Stay tuned for updates!</p>
+    <button onclick="navigate('home')" class="btn btn-secondary" style="margin-top:2rem">
+      <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> กลับหน้าหลัก
+    </button>
+  </div>${BottomNav()}`;
+}
+
+// ============ ROUTER ============
+function render() {
+  const app = document.getElementById('app');
+  const page = state.page;
+
+  let html = '';
+  switch (page) {
+    case 'home': html = HomePage(); break;
+    case 'calendar': html = CalendarPage(); break;
+    case 'ports': html = PortfolioPage(); break;
+    case 'colorsport': html = ColorSportPage(); break;
+    case 'lunchmenu': html = LunchMenuPage(); break;
+    case 'booking': html = BookingPage(); break;
+    case 'lost-find': html = LostFoundPage(); break;
+    case 'login': html = LoginPage(); break;
+    case 'dashboard': html = DashboardPage(); break;
+    case 'musicday': html = MusicDayPage(); break;
+    default: html = HomePage();
+  }
+  app.innerHTML = html;
+}
+
+// Initial render
+render();
+
+// Desktop responsive: add side padding
+const style = document.createElement('style');
+style.textContent = `@media(min-width:768px){.page-wrap{max-width:28rem}}@media(min-width:1024px){.page-wrap-lg .glass-card table{min-width:600px}}`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
